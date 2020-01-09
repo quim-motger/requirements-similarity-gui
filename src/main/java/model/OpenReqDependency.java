@@ -13,6 +13,10 @@ public class OpenReqDependency implements Serializable {
     private Double dependency_score;
     private DependencyStatus status;
 
+    public OpenReqDependency() {
+
+    }
+
     public OpenReqDependency(String fromid, String toid, DependencyType dependency_type, Double dependency_score) {
         this.fromid = fromid;
         this.toid = toid;

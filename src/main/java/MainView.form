@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="12" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="20" left="20" bottom="20" right="20"/>
     <constraints>
-      <xy x="20" y="20" width="787" height="400"/>
+      <xy x="20" y="20" width="787" height="564"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -103,7 +103,7 @@
           <text value="Similarity Detection Analysis"/>
         </properties>
       </component>
-      <grid id="f0be8" binding="algorithmCheckboxPanel" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="f0be8" binding="algorithmCheckboxPanel" layout-manager="GridLayoutManager" row-count="1" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="8" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -133,7 +133,7 @@
           </component>
           <hspacer id="2a9aa">
             <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
           <component id="3b7fe" class="javax.swing.JLabel" binding="algorithmLabel">
@@ -145,28 +145,44 @@
               <text value="Algorithm"/>
             </properties>
           </component>
-        </children>
-      </grid>
-      <grid id="22c0c" binding="bm25fPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="9" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="a01ad" class="javax.swing.JLabel" binding="bm25fTitleLabel">
+          <grid id="a7f63" binding="fesvmPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="3" row-span="1" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties>
-              <font name="FreeSans" size="14"/>
-              <text value="BM25F algorithm configuration"/>
-            </properties>
-          </component>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="dbdd5" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="FreeSans" size="14"/>
+                  <text value="FE-SVM feature set"/>
+                </properties>
+              </component>
+              <component id="174e4" class="javax.swing.JCheckBox" binding="lexicalCheckbox">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Lexical"/>
+                </properties>
+              </component>
+              <component id="ccb5a" class="javax.swing.JCheckBox" binding="syntacticCheckbox">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Syntactic"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
-      <grid id="a7f63" binding="fesvmPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="67269" binding="loadDuplicatesPane" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="10" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -174,15 +190,85 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="dbdd5" class="javax.swing.JLabel">
+          <component id="df8e5" class="javax.swing.JLabel" binding="duplicatesLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <font name="FreeSans" size="14"/>
-              <text value="FE-SVM algorithm configuration"/>
+              <text value="Upload Requirement Pairs data"/>
             </properties>
           </component>
+          <component id="40d6a" class="javax.swing.JTextField" binding="duplicatesSchemaField">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="eabb8" class="javax.swing.JButton" binding="uploadDuplicatesButton">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Upload"/>
+            </properties>
+          </component>
+          <component id="b23e0" class="javax.swing.JLabel" binding="duplicatesListLabel">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Requirement Pairs"/>
+            </properties>
+          </component>
+          <scrollpane id="fa8e0" binding="duplicatesScrollPane">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="97909" class="javax.swing.JTable" binding="requirementPairsTable">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
+          <grid id="d589a" binding="buttonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="3daeb" class="javax.swing.JButton" binding="optimizeButton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Optimize"/>
+                </properties>
+              </component>
+              <component id="a76a5" class="javax.swing.JButton" binding="trainButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Train"/>
+                </properties>
+              </component>
+              <component id="1c31e" class="javax.swing.JButton" binding="testButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Test"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>

@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.OpenReqDependency;
 import model.OpenReqProject;
 import model.OpenReqRequirement;
 import model.OpenReqSchema;
@@ -6,6 +7,8 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +28,9 @@ public class MainView {
     private JLabel fileUploadLabel;
     private JLabel projectLabel;
     private JLabel requirementsLabel;
+    private JLabel duplicatesLabel;
+    private JLabel duplicatesListLabel;
+
 
     private JTextField requirementsFile;
     private JComboBox projectComboBox;
@@ -38,16 +44,49 @@ public class MainView {
     private JCheckBox bm25fCheckbox;
     private JCheckBox fesvmCheckbox;
     private JLabel algorithmLabel;
-    private JPanel bm25fPanel;
     private JPanel fesvmPanel;
-    private JLabel bm25fTitleLabel;
+    private JCheckBox lexicalCheckbox;
+    private JCheckBox syntacticCheckbox;
+
+    //Upload duplicates schema
+    private JTextField duplicatesSchemaField;
+    private JButton uploadDuplicatesButton;
+
+    //Duplicates data (load)
+    private JScrollPane duplicatesScrollPane;
+    private JTable requirementPairsTable;
+    private DefaultTableModel requirementPairsTableModel;
+    private JPanel loadDuplicatesPane;
+
+    //Final button set
+    private JPanel buttonPanel;
+    private JButton optimizeButton;
+    private JButton trainButton;
+    private JButton testButton;
 
     private OpenReqSchema openReqSchema;
+    private OpenReqSchema duplicateSchema;
 
     public MainView() {
         initializeGUIComponents();
         setListeners();
         initializeTableModels();
+        initializeButtonListeners();
+    }
+
+    private void initializeButtonListeners() {
+        optimizeButton.addActionListener(e -> {
+            //TODO BM25F --> optimize free parameters according to dataset
+            //TODO FE-SVM --> train&test with optimization and store best values
+        });
+        trainButton.addActionListener(e -> {
+            //TODO BM25F --> cross-validation and threshold for best value
+            //TODO FE-SVM --> train classifier
+        });
+        testButton.addActionListener(e -> {
+            //TODO BM25F --> score with threshold
+            //TODO FE-SVM --> predict against classifier
+        });
     }
 
     private void initializeTableModels() {
@@ -59,6 +98,9 @@ public class MainView {
         requirementsTable.getColumnModel().getColumn(0).setCellRenderer(new TextTableRenderer());
         requirementsTable.getColumnModel().getColumn(1).setCellRenderer(new TextTableRenderer());
         requirementsTable.getColumnModel().getColumn(2).setCellRenderer(new TextTableRenderer());
+        
+        requirementPairsTableModel = new DefaultTableModel(new String[] {"From ID", "To ID", "Status", "Score"}, 0);
+        requirementPairsTable.setModel(requirementPairsTableModel);
 
     }
 
@@ -86,7 +128,6 @@ public class MainView {
         });
         //Initialize project as not enabled, before uploading requirements
         projectComboBox.setEnabled(false);
-        bm25fPanel.setVisible(false);
         fesvmPanel.setVisible(false);
     }
 
@@ -104,7 +145,6 @@ public class MainView {
            int state = e.getStateChange();
            if (state == ItemEvent.SELECTED) {
                fesvmCheckbox.setSelected(false);
-               bm25fPanel.setVisible(true);
                fesvmPanel.setVisible(false);
            }
        });
@@ -113,9 +153,53 @@ public class MainView {
            if (state == ItemEvent.SELECTED) {
                bm25fCheckbox.setSelected(false);
                fesvmPanel.setVisible(true);
-               bm25fPanel.setVisible(false);
            }
        });
+       uploadDuplicatesButton.addActionListener(e -> {
+           JFileChooser jFileChooser = new JFileChooser();
+           jFileChooser.setCurrentDirectory(new File("."));
+           jFileChooser.showOpenDialog(null);
+           File file =  jFileChooser.getSelectedFile();
+           duplicatesSchemaField.setText(file.getAbsolutePath());
+           fillDuplicatesTable(jFileChooser.getSelectedFile());
+       });
+    }
+
+    private void fillDuplicatesTable(File selectedFile) {
+        for (int i = requirementPairsTableModel.getRowCount() - 1; i >= 0; --i) {
+            requirementPairsTableModel.removeRow(i);
+        }
+
+        try {
+            BufferedReader br = null;
+            br = new BufferedReader(new FileReader(selectedFile));
+
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            String text = sb.toString();
+            JSONObject json = new JSONObject(text);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            duplicateSchema = objectMapper.readValue(json.toString(), OpenReqSchema.class);
+
+            int rowCount = requirementPairsTableModel.getRowCount();
+            //Remove rows one by one from the end of the table
+            for (int i = rowCount - 1; i >= 0; i--) {
+                requirementPairsTableModel.removeRow(i);
+            }
+            for (OpenReqDependency dependency : duplicateSchema.getDependencies()) {
+                requirementPairsTableModel.addRow(new String[]{dependency.getFromid(), dependency.getToid(),
+                        dependency.getStatus().toString(),
+                        dependency.getDependency_score() == null ? "-" : dependency.getDependency_score().toString()});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fillRequirementTables(File requirementsFile) {
@@ -124,8 +208,7 @@ public class MainView {
         }
 
         try {
-            BufferedReader br = null;
-            br = new BufferedReader(new FileReader(requirementsFile));
+            BufferedReader br = new BufferedReader(new FileReader(requirementsFile));
 
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -154,18 +237,6 @@ public class MainView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*ArrayList<String[]> projects = new ArrayList<String[]>();
-        for (int i = 0; i < json.getJSONArray("requirements").length(); ++i) {
-            JSONObject project = json.getJSONArray("requirements").getJSONObject(i);
-            String[] projectData = {project.getString("id"), project.getString("text")};
-            projects.add(projectData);
-        }
-        for (String[] project : projects) {
-            reqTableModel.addRow(project);
-        }*/
-
-        requirementsTableModel.addRow(new String[]{"id", "name", "text"});
 
     }
 
